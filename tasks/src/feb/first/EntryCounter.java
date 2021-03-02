@@ -1,4 +1,4 @@
-package feb.seventeenth;
+package feb.first;
 
 /*
 Найти кол-во вхождений наибольшего числа в массиве

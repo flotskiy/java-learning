@@ -1,4 +1,4 @@
-package feb.seventeenth;
+package feb.first;
 
 /*
 Посчитать абсолютную разницу диагоналей в матрице n * n

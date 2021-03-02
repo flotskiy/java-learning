@@ -1,4 +1,4 @@
-package feb.seventeenth;
+package feb.first;
 
 /*
 Вывести на экран символы # так чтобы получилась лестница
@@ -14,7 +14,6 @@ package feb.seventeenth;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 
 public class Stairway {
     public static void main(String[] args) {
