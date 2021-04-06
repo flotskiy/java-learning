@@ -1,4 +1,4 @@
-package feb.second.equals.v1;
+package feb.equals.v1;
 
 public class Woman extends Person {
     public Woman(String name, int age, int height) {

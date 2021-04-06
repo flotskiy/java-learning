@@ -1,4 +1,4 @@
-package feb.second;
+package feb;
 
 /*
 Поместить строку в центр другой строки

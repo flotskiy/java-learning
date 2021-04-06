@@ -1,4 +1,4 @@
-package feb.second.equals.v1;
+package feb.equals.v1;
 
 import java.util.Objects;
 

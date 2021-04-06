@@ -1,4 +1,4 @@
-package feb.first;
+package feb;
 
 /*
 Вывести на экран символы # так чтобы получилась лестница
@@ -24,7 +24,7 @@ public class Stairway {
         while (true) {
             System.out.println("Please enter the number or type 'exit' to stop");
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            String input = null;
+            String input = "";
             try {
                 input = bufferedReader.readLine();
             } catch (IOException e) {
