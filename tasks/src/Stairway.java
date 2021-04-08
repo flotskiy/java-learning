@@ -7,7 +7,7 @@
  #####
 ######
 в зависимоти от высоты n. n > 0, n < 100;
- */
+*/
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,7 +44,6 @@ public class Stairway {
                         "Please try again!\n");
                 continue;
             }
-
             System.out.println("Stairway for number = " + number + "\n");
 
             for (int i = 1; i <= number; i++) {

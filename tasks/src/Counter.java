@@ -1,3 +1,9 @@
+/*
+Найти в массиве строк частоту слов с помощью Map
+string array example:
+String [] array = new String [] {"cat", "mouse", "dog", "crocodile", "tiger", "deer", "cat", "mouse", "wolf"};
+ */
+
 import java.util.HashMap;
 import java.util.Map;
 
