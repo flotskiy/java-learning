@@ -1,13 +1,17 @@
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class BankAccount implements Account {
     private static volatile AtomicLong accountCounter = new AtomicLong(Long.MAX_VALUE);
     private TransactionHolder transactionHolder = new TransactionHolder();
 
     private final long accountNumber;
-    private double amountOfMoney;
+    private volatile double amountOfMoney;
     private final AccountType accountType;
     private final String accountOwner;
+
+    Lock lock = new ReentrantLock();
 
     public BankAccount(double amountOfMoney, AccountType accountType, String accountOwner) {
         accountNumber = getAccountCounter();
@@ -46,17 +50,48 @@ public class BankAccount implements Account {
         return false;
     }
 
-    // TODO - make synchronized
     public boolean send(BankAccount receiver, double amount) {
-        Transaction transaction = new Transaction(this, receiver, amount);
-        transactionHolder.addTransaction(transaction);
-        receiver.getTransactionHolder().addTransaction(transaction);
-        if (take(amount)) {
-            receiver.put(amount);
-            transaction.fixSuccess();
-            return true;
+        try {
+            if (acquireLocks(this.lock, receiver.lock)) {
+                Transaction transaction = new Transaction(this, receiver, amount);
+                transactionHolder.addTransaction(transaction);
+                receiver.getTransactionHolder().addTransaction(transaction);
+                if (take(amount)) {
+                    receiver.put(amount);
+                    transaction.fixSuccess();
+                    releaseLocks(this.lock, receiver.lock);
+                    return true;
+                }
+                releaseLocks(this.lock, receiver.lock);
+                return false;
+            }
+        } catch (Exception e) {
+            releaseLocks(this.lock, receiver.lock);
+            e.printStackTrace();
         }
         return false;
+    }
+
+    public boolean acquireLocks(Lock first, Lock second) {
+        while (true) {
+            if (first.tryLock()) {
+                if (second.tryLock()) {
+                    return true;
+                }
+                first.unlock();
+            } else {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void releaseLocks(Lock first, Lock second) {
+        first.unlock();
+        second.unlock();
     }
 
     public long getAccountNumber() {
