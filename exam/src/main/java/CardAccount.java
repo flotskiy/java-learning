@@ -1,12 +1,12 @@
 public class CardAccount extends BankAccount {
     private static final double ONE_PER_CENT_COMMISSION = 1.01;
 
-    public CardAccount(double amountOfMoney, String accountName, String accountOwner) {
-        super(amountOfMoney, accountName, accountOwner);
+    public CardAccount(double amountOfMoney, AccountType accountType, String accountOwner) {
+        super(amountOfMoney, accountType, accountOwner);
     }
 
-    public CardAccount(String accountName, String accountOwner) {
-        super(accountName, accountOwner);
+    public CardAccount(AccountType accountType, String accountOwner) {
+        super(accountType, accountOwner);
     }
 
     @Override

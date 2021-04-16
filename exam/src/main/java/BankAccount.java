@@ -6,20 +6,20 @@ public class BankAccount implements Account {
 
     private final long accountNumber;
     private double amountOfMoney;
-    private final String accountName;
+    private final AccountType accountType;
     private final String accountOwner;
 
-    public BankAccount(double amountOfMoney, String accountName, String accountOwner) {
+    public BankAccount(double amountOfMoney, AccountType accountType, String accountOwner) {
         accountNumber = getAccountCounter();
         this.amountOfMoney = amountOfMoney;
-        this.accountName = accountName;
+        this.accountType = accountType;
         this.accountOwner = accountOwner;
     }
 
-    public BankAccount(String accountName, String accountOwner) {
+    public BankAccount(AccountType accountType, String accountOwner) {
         accountNumber = getAccountCounter();
         amountOfMoney = Math.random() * Integer.MAX_VALUE;
-        this.accountName = accountName;
+        this.accountType = accountType;
         this.accountOwner = accountOwner;
     }
 
@@ -46,9 +46,11 @@ public class BankAccount implements Account {
         return false;
     }
 
+    // TODO - make synchronized
     public boolean send(BankAccount receiver, double amount) {
         Transaction transaction = new Transaction(this, receiver, amount);
         transactionHolder.addTransaction(transaction);
+        receiver.getTransactionHolder().addTransaction(transaction);
         if (take(amount)) {
             receiver.put(amount);
             transaction.fixSuccess();
@@ -69,11 +71,15 @@ public class BankAccount implements Account {
         this.amountOfMoney = amountOfMoney;
     }
 
-    public String getAccountName() {
-        return accountName;
+    public AccountType getAccountType() {
+        return accountType;
     }
 
     public String getAccountOwner() {
         return accountOwner;
+    }
+
+    public TransactionHolder getTransactionHolder() {
+        return transactionHolder;
     }
 }
