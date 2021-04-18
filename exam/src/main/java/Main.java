@@ -1,16 +1,17 @@
 public class Main {
     public static void main(String[] args) {
+        AccountHolder accountHolderTest = new AccountHolder();
 
         BankAccount bankAccount = new BankAccount(
-                50000., AccountType.CURRENT, "Большой начальник"
+                accountHolderTest, 50000., AccountType.CURRENT, "Большой начальник"
         );
 
         DepositAccount depositAccount = new DepositAccount(
-                40000., AccountType.TIME_DEPOSIT, "Паша"
+                accountHolderTest, 40000., AccountType.TIME_DEPOSIT, "Паша"
         );
 
         CardAccount cardAccount = new CardAccount(
-                30000., AccountType.SAVINGS, "Олег"
+                accountHolderTest, 30000., AccountType.SAVINGS, "Олег"
         );
 
         Thread threadOne = new Thread(() -> {
@@ -48,16 +49,18 @@ public class Main {
             e.printStackTrace();
         }
 
+        System.out.println("---------------");
+
         double bank = bankAccount.getAmountOfMoney();
-        System.out.println("Bank account remains - " + bank);
+        System.out.println("Bank account of '" + bankAccount.getAccountOwner() + "', remains - " + bank);
         bankAccount.getTransactionHolder().showTransactions();
 
         double card = cardAccount.getAmountOfMoney();
-        System.out.println("Card account remains - " + card);
+        System.out.println("Card account of '" + cardAccount.getAccountOwner() + "', remains - " + card);
         cardAccount.getTransactionHolder().showTransactions();
 
         double deposit = depositAccount.getAmountOfMoney();
-        System.out.println("Deposit account remains - " + deposit);
+        System.out.println("Deposit account of '" +depositAccount.getAccountOwner() + "', remains - "+ deposit);
         depositAccount.getTransactionHolder().showTransactions();
     }
 }

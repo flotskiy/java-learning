@@ -1,11 +1,14 @@
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BankAccount implements Account {
     private static volatile AtomicLong accountCounter = new AtomicLong(Long.MAX_VALUE);
-    private TransactionHolder transactionHolder = new TransactionHolder();
+    private static final Random RANDOM = new Random();
 
+    private final TransactionHolder transactionHolder;
+    private final AccountHolder accountHolder;
     private final long accountNumber;
     private volatile double amountOfMoney;
     private final AccountType accountType;
@@ -13,18 +16,22 @@ public class BankAccount implements Account {
 
     Lock lock = new ReentrantLock();
 
-    public BankAccount(double amountOfMoney, AccountType accountType, String accountOwner) {
+    public BankAccount(AccountHolder accountHolder, double amountOfMoney, AccountType accountType, String accountOwner) {
+        this.transactionHolder = new TransactionHolder();
+        this.accountHolder = accountHolder;
         accountNumber = getAccountCounter();
         this.amountOfMoney = amountOfMoney;
         this.accountType = accountType;
         this.accountOwner = accountOwner;
     }
 
-    public BankAccount(AccountType accountType, String accountOwner) {
+    public BankAccount(AccountHolder accountHolder) {
+        this.transactionHolder = new TransactionHolder();
+        this.accountHolder = accountHolder;
         accountNumber = getAccountCounter();
         amountOfMoney = Math.random() * Integer.MAX_VALUE;
-        this.accountType = accountType;
-        this.accountOwner = accountOwner;
+        accountType = AccountType.values()[RANDOM.nextInt(AccountType.values().length)];
+        accountOwner = ClientsHolder.getNAMES()[RANDOM.nextInt(ClientsHolder.getNAMES().length)];
     }
 
     public static void getNextUniqueAccountNumber() {
@@ -50,23 +57,28 @@ public class BankAccount implements Account {
         return false;
     }
 
-    public boolean send(BankAccount receiver, double amount) {
+    public boolean send(Account receiver) {
+        int amountToSend = RANDOM.nextInt(200_000);
+        return send(receiver, amountToSend);
+    }
+
+    public boolean send(Account receiver, double amount) {
         try {
-            if (acquireLocks(this.lock, receiver.lock)) {
+            if (acquireLocks(this.lock, receiver.getLock())) {
                 Transaction transaction = new Transaction(this, receiver, amount);
                 transactionHolder.addTransaction(transaction);
                 receiver.getTransactionHolder().addTransaction(transaction);
                 if (take(amount)) {
                     receiver.put(amount);
                     transaction.fixSuccess();
-                    releaseLocks(this.lock, receiver.lock);
+                    releaseLocks(this.lock, receiver.getLock());
                     return true;
                 }
-                releaseLocks(this.lock, receiver.lock);
+                releaseLocks(this.lock, receiver.getLock());
                 return false;
             }
         } catch (Exception e) {
-            releaseLocks(this.lock, receiver.lock);
+            releaseLocks(this.lock, receiver.getLock());
             e.printStackTrace();
         }
         return false;
@@ -116,5 +128,9 @@ public class BankAccount implements Account {
 
     public TransactionHolder getTransactionHolder() {
         return transactionHolder;
+    }
+
+    public Lock getLock() {
+        return lock;
     }
 }

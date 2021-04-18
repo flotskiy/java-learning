@@ -4,12 +4,17 @@ public class AccountManyThreadsTest extends TestCase {
     BankAccount testBankAccount;
     DepositAccount testDepositAccount;
     CardAccount testCardAccount;
+    AccountHolder accountHolder;
 
     @Override
     protected void setUp() throws Exception {
-        testBankAccount = new BankAccount(100000., AccountType.CURRENT, "JavaLearnersLtd");
-        testDepositAccount = new DepositAccount(50000., AccountType.TIME_DEPOSIT, "Вася");
-        testCardAccount = new CardAccount(90000., AccountType.SAVINGS, "Гена");
+        accountHolder = new AccountHolder();
+        testBankAccount =
+                new BankAccount(accountHolder, 100000., AccountType.CURRENT, "JavaLearnersLtd");
+        testDepositAccount =
+                new DepositAccount(accountHolder, 50000., AccountType.TIME_DEPOSIT, "Вася");
+        testCardAccount =
+                new CardAccount(accountHolder, 90000., AccountType.SAVINGS, "Гена");
     }
 
     public void testTransactionCaseOne() {
@@ -66,5 +71,6 @@ public class AccountManyThreadsTest extends TestCase {
         testBankAccount = null;
         testDepositAccount = null;
         testCardAccount = null;
+        accountHolder = null;
     }
 }

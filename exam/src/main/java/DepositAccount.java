@@ -3,13 +3,14 @@ import java.util.Calendar;
 public class DepositAccount extends BankAccount {
     private Calendar lastIncome;
 
-    public DepositAccount(double amountOfMoney, AccountType accountType, String accountOwner) {
-        super(amountOfMoney, accountType, accountOwner);
+    public DepositAccount(AccountHolder accountHolder, double amountOfMoney, AccountType accountType, String accountOwner) {
+        super(accountHolder, amountOfMoney, accountType, accountOwner);
         lastIncome = Calendar.getInstance();
     }
 
-    public DepositAccount(AccountType accountType, String accountOwner) {
-        super(accountType, accountOwner);
+    public DepositAccount(AccountHolder accountHolder) {
+        super(accountHolder);
+        lastIncome = Calendar.getInstance();
     }
 
     @Override

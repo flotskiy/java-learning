@@ -6,12 +6,17 @@ public class AccountSingleThreadTest extends TestCase {
     BankAccount testBankAccount;
     DepositAccount testDepositAccount;
     CardAccount testCardAccount;
+    AccountHolder accountHolder;
 
     @Override
     protected void setUp() throws Exception {
-        testBankAccount = new BankAccount(100000., AccountType.CURRENT, "JavaLearnersLtd");
-        testDepositAccount = new DepositAccount(50000., AccountType.TIME_DEPOSIT, "Вася");
-        testCardAccount = new CardAccount(90000., AccountType.SAVINGS, "Петя");
+        accountHolder = new AccountHolder();
+        testBankAccount =
+                new BankAccount(accountHolder, 100000., AccountType.CURRENT, "JavaLearnersLtd");
+        testDepositAccount =
+                new DepositAccount(accountHolder, 50000., AccountType.TIME_DEPOSIT, "Вася");
+        testCardAccount =
+                new CardAccount(accountHolder, 90000., AccountType.SAVINGS, "Петя");
     }
 
     public void testTransactionFromBankAccountToDepositAccount() {
@@ -49,5 +54,6 @@ public class AccountSingleThreadTest extends TestCase {
         testBankAccount = null;
         testDepositAccount = null;
         testCardAccount = null;
+        accountHolder = null;
     }
 }

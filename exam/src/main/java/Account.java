@@ -1,7 +1,19 @@
+import java.util.concurrent.locks.Lock;
+
 public interface Account {
-    public void put(double amountToPut);
+    void put(double amountToPut);
 
-    public boolean take(double amountToTake);
+    boolean take(double amountToTake);
 
-    public boolean send(BankAccount receiver, double amount);
+    boolean send(Account receiver);
+
+    boolean send(Account receiver, double amount);
+
+    TransactionHolder getTransactionHolder();
+
+    Lock getLock();
+
+    double getAmountOfMoney();
+
+    String getAccountOwner();
 }

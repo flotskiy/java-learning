@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionHolder {
-    private final ArrayList<Transaction> transactions = new ArrayList<>();
+    private volatile List<Transaction> transactions = new ArrayList<>();
 
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
