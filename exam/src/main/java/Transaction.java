@@ -28,4 +28,15 @@ public class Transaction {
     public void fixSuccess() {
         isSuccessfully = true;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", from=" + from +
+                ", to=" + to +
+                ", amount=" + amount +
+                ", isSuccessfully=" + isSuccessfully +
+                '}';
+    }
 }

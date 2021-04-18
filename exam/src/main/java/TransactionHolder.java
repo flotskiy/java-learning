@@ -6,4 +6,11 @@ public class TransactionHolder {
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
     }
+
+    public void showTransactions() {
+        System.out.println("List of transactions:");
+        for (Transaction transaction : transactions) {
+            System.out.println(transaction);
+        }
+    }
 }

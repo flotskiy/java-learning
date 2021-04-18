@@ -50,11 +50,14 @@ public class Main {
 
         double bank = bankAccount.getAmountOfMoney();
         System.out.println("Bank account remains - " + bank);
+        bankAccount.getTransactionHolder().showTransactions();
 
         double card = cardAccount.getAmountOfMoney();
         System.out.println("Card account remains - " + card);
+        cardAccount.getTransactionHolder().showTransactions();
 
         double deposit = depositAccount.getAmountOfMoney();
         System.out.println("Deposit account remains - " + deposit);
+        depositAccount.getTransactionHolder().showTransactions();
     }
 }
